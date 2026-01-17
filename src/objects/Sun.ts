@@ -44,6 +44,19 @@ export class Sun {
 
     this.light = new THREE.DirectionalLight(0xffffff, 2.0);
     this.light.position.set(-1, 0.5, 1.5);
+    this.light.castShadow = true;
+    this.light.shadow.mapSize.width = 2048;
+    this.light.shadow.mapSize.height = 2048;
+    this.light.shadow.camera.near = 0.1;
+    this.light.shadow.camera.far = 500;
+    this.light.shadow.camera.left = -100;
+    this.light.shadow.camera.right = 100;
+    this.light.shadow.camera.top = 100;
+    this.light.shadow.camera.bottom = -100;
+    this.light.shadow.bias = -0.0001;
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.2); // Soft white light
+    this.group.add(ambientLight);
 
     this.group.add(this.mesh);
     this.group.add(this.glowMesh);

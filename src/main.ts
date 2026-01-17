@@ -33,9 +33,11 @@ class SolarSystemApp {
     this.speedController = new SpeedController();
 
     this.speedController.onChange((settings) => {});
+    this.speedController.onCenter(() => this.focusOnEarth());
 
     this.sceneManager.add(this.sun.group);
     this.sceneManager.add(this.orbitSystem.earthOrbitGroup);
+    this.sceneManager.add(this.orbitSystem.getOrbitVisuals());
     this.sceneManager.add(this.starfield.points);
 
     this.focusOnEarth();

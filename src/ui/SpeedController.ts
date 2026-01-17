@@ -14,9 +14,26 @@ const REALISTIC_BASE: SpeedSettings = {
   timeScale: 1,
 };
 
+const FAST_PRESET: SpeedSettings = {
+  earthOrbitSpeed: 0.005,
+  moonOrbitSpeed: 0.05,
+  earthRotationSpeed: 0.05,
+  moonRotationSpeed: 0.05,
+  timeScale: 2,
+};
+
+const DEMO_PRESET: SpeedSettings = {
+  earthOrbitSpeed: 0.02,
+  moonOrbitSpeed: 0.2,
+  earthRotationSpeed: 0.1,
+  moonRotationSpeed: 0.1,
+  timeScale: 1,
+};
+
 export class SpeedController {
   private settings: SpeedSettings;
   private onChangeCallbacks: ((settings: SpeedSettings) => void)[] = [];
+  private onCenterCallbacks: (() => void)[] = [];
 
   constructor() {
     this.settings = { ...REALISTIC_BASE };
@@ -62,6 +79,22 @@ export class SpeedController {
       this.updateSliders();
       this.notifyChange();
     });
+
+    document.querySelectorAll('.preset-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const preset = target.dataset.preset;
+        if (preset === 'realistic') this.settings = { ...REALISTIC_BASE };
+        if (preset === 'fast') this.settings = { ...FAST_PRESET };
+        if (preset === 'demo') this.settings = { ...DEMO_PRESET };
+        this.updateSliders();
+        this.notifyChange();
+      });
+    });
+
+    document.getElementById('center-system')?.addEventListener('click', () => {
+      this.onCenterCallbacks.forEach((cb) => cb());
+    });
   }
 
   private updateSliders(): void {
@@ -84,6 +117,10 @@ export class SpeedController {
 
   public onChange(callback: (settings: SpeedSettings) => void): void {
     this.onChangeCallbacks.push(callback);
+  }
+
+  public onCenter(callback: () => void): void {
+    this.onCenterCallbacks.push(callback);
   }
 
   public getSettings(): SpeedSettings {

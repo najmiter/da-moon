@@ -34,6 +34,8 @@ export class Earth {
     });
 
     this.mesh = new THREE.Mesh(geometry, earthMaterial);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
 
     const lightsMaterial = new THREE.MeshBasicMaterial({
       map: earthLights,
