@@ -7,26 +7,26 @@ export interface SpeedSettings {
 }
 
 const REALISTIC_BASE: SpeedSettings = {
-  earthOrbitSpeed: 0.001,
-  moonOrbitSpeed: 0.013,
-  earthRotationSpeed: 0.01,
-  moonRotationSpeed: 0.013,
+  earthRotationSpeed: 0.5,
+  moonOrbitSpeed: 0.5 / 27.3,
+  earthOrbitSpeed: 0.5 / 365.25,
+  moonRotationSpeed: 0.5 / 27.3,
   timeScale: 1,
 };
 
 const FAST_PRESET: SpeedSettings = {
-  earthOrbitSpeed: 0.005,
-  moonOrbitSpeed: 0.05,
-  earthRotationSpeed: 0.05,
-  moonRotationSpeed: 0.05,
-  timeScale: 2,
+  earthRotationSpeed: 2.0,
+  moonOrbitSpeed: 2.0 / 27.3,
+  earthOrbitSpeed: 2.0 / 365.25,
+  moonRotationSpeed: 2.0 / 27.3,
+  timeScale: 1,
 };
 
 const DEMO_PRESET: SpeedSettings = {
-  earthOrbitSpeed: 0.02,
-  moonOrbitSpeed: 0.2,
-  earthRotationSpeed: 0.1,
-  moonRotationSpeed: 0.1,
+  earthRotationSpeed: 1.0,
+  moonOrbitSpeed: 0.08,
+  earthOrbitSpeed: 0.005,
+  moonRotationSpeed: 0.08,
   timeScale: 1,
 };
 
