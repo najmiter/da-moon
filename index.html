@@ -1,15 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="color-scheme: dark;">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Visualize how the moon is moving around the earth and how it goes through its phases. Or you can just look at how awesome the universe is (of course this is only 3 bodies).">
+    <meta name="author" content="najmiter">
+    <meta name="keywords" content="moon, earth, sun, 3D, visualization">
     <title>Moon Phases (or whatever's the right word for it) in 3D</title>
   </head>
   <body>
     <div id="da-moon-entry"></div>
 
-    <div id="speed-controller">
+    <div id="speed-controller" style="display: none;">
       <div class="speed-header">
         <h3>Controls</h3>
         <button id="toggle-panel">−</button>
@@ -52,8 +55,22 @@
         </div>
 
         <button id="center-system" class="action-btn">Center on System</button>
+
+        <button id="music-controller">Stop music</button>
+
+        <div class="disclaimer">
+          <p>Disclaimer: This is not to scale. The moon is much smaller than the earth and the sun. And the distances are not to scale either.</p>
+        </div>
       </div>
+
     </div>
+
+    <dialog id="welcome-dialog" open closedby="closerequest">
+      <h2>Welcome!</h2>
+      <p>Are you ready?</p>
+      <button id="close-and-start">Ready</button>
+    </dialog> 
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

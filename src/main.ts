@@ -45,6 +45,7 @@ class SolarSystemApp {
     this.clock = new THREE.Clock();
 
     this.animate();
+    this.playBgm();
   }
 
   private animate = (): void => {
@@ -57,11 +58,10 @@ class SolarSystemApp {
     this.orbitSystem.update(deltaTime, speeds);
     this.starfield.update(deltaTime);
 
-    if (!this.sceneManager.isUserInteracting) {
-      const earthPos = this.orbitSystem.getEarthWorldPosition();
-
-      this.sceneManager.controls.target.lerp(earthPos, 0.08);
-    }
+    // if (!this.sceneManager.isUserInteracting) {
+    //   const earthPos = this.orbitSystem.getEarthWorldPosition();
+    //   this.sceneManager.controls.target.lerp(earthPos, 0.08);
+    // }
 
     this.sceneManager.render();
   };
@@ -71,17 +71,52 @@ class SolarSystemApp {
     this.sceneManager.controls.target.copy(earthPos);
     this.sceneManager.camera.position.set(earthPos.x + 20, earthPos.y + 10, earthPos.z + 30);
   }
-}
 
-function playBgm() {
-  const baseUrl = import.meta.env.BASE_URL;
-  const audio = new Audio(`${baseUrl}bgm/aurora.webm`);
-  audio.volume = 0.1;
-  audio.loop = true;
-  audio.play();
+  private playBgm(): void {
+    const musicController = document.getElementById('music-controller');
+    if (!musicController) return;
+
+    const musicState = localStorage.getItem('music');
+    musicController.textContent = musicState === 'playing' ? 'Stop music' : 'Play music';
+
+    const listener = new THREE.AudioListener();
+    this.sceneManager.camera.add(listener);
+
+    const sound = new THREE.Audio(listener);
+    const audioLoader = new THREE.AudioLoader();
+
+    musicController.addEventListener('click', () => {
+      if (!sound.isPlaying) {
+        sound.play();
+        localStorage.setItem('music', 'playing');
+        musicController.textContent = 'Stop music';
+      } else {
+        sound.pause();
+        localStorage.setItem('music', 'paused');
+        musicController.textContent = 'Play music';
+      }
+    });
+    
+    const baseUrl = import.meta.env.BASE_URL;
+    audioLoader.load(`${baseUrl}bgm/aurora.webm`, (buffer) => {
+      sound.setBuffer(buffer);
+      sound.setLoop(true);
+      sound.setVolume(0.5);
+      if (musicState === 'playing') {
+        sound.play();
+      }
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  playBgm();
-  new SolarSystemApp();
+  const dialog = document.getElementById('welcome-dialog') as HTMLDialogElement;
+  const closeBtn = document.querySelector('#close-and-start') as HTMLButtonElement;
+  const speedPanel = document.querySelector('#speed-controller') as HTMLDivElement;
+
+  closeBtn.addEventListener('click', () => {
+    dialog.requestClose()
+    speedPanel.style.display = 'block';
+    new SolarSystemApp();
+  });
 });
