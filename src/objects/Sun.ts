@@ -11,12 +11,36 @@ export class Sun {
     this.group = new THREE.Group();
 
     const sunGeometry = new THREE.IcosahedronGeometry(radius, 12);
-    const sunMaterial = new THREE.MeshBasicMaterial({
-      color: 0xffff44,
+    
+    const sunMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        void main() {
+          vUv = uv;
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        void main() {
+          float intensity = dot(vNormal, vec3(0.0, 0.0, 1.0));
+          vec3 colorCenter = vec3(1.0, 1.0, 1.0); // Pure white center
+          vec3 colorEdge = vec3(1.0, 1.0, 0.6);   // Bright yellow edge
+          
+          vec3 finalColor = mix(colorEdge, colorCenter, pow(intensity, 1.0));
+          
+          gl_FragColor = vec4(finalColor * 2.0, 1.0);
+        }
+      `,
     });
     this.mesh = new THREE.Mesh(sunGeometry, sunMaterial);
 
-    const glowGeometry = new THREE.IcosahedronGeometry(radius * 1.1, 12);
+    const glowGeometry = new THREE.IcosahedronGeometry(radius * 1.2, 12);
     const glowMaterial = new THREE.ShaderMaterial({
       uniforms: {
         viewVector: { value: new THREE.Vector3() },
@@ -31,13 +55,14 @@ export class Sun {
       fragmentShader: `
         varying vec3 vNormal;
         void main() {
-          float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-          gl_FragColor = vec4(1.0, 0.9, 0.5, 1.0) * intensity;
+          float intensity = pow(0.55 - dot(vNormal, vec3(0, 0, 1.0)), 3.0);
+          gl_FragColor = vec4(1.0, 1.0, 0.8, 1.0) * intensity;
         }
       `,
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending,
       transparent: true,
+      depthWrite: false,
     });
     this.glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
     this.glowMesh.scale.setScalar(1.8);
