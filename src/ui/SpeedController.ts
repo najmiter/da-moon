@@ -7,7 +7,7 @@ export interface SpeedSettings {
 }
 
 const REALISTIC_BASE: SpeedSettings = {
-  earthRotationSpeed: 0.5,
+  earthRotationSpeed: 0.01,
   moonOrbitSpeed: 0.5 / 27.3,
   earthOrbitSpeed: 0.5 / 365.25,
   moonRotationSpeed: 0.5 / 27.3,
@@ -32,13 +32,23 @@ const DEMO_PRESET: SpeedSettings = {
 
 export class SpeedController {
   private settings: SpeedSettings;
-  private onChangeCallbacks: ((settings: SpeedSettings) => void)[] = [];
+  private onChangeCallbacks: ((settings: SpeedSettings) => void)[] = []; // kinda like delegate in C# (hawk thua)
   private onCenterCallbacks: (() => void)[] = [];
+  private discoSound: HTMLAudioElement | undefined;
 
   constructor() {
     this.settings = { ...REALISTIC_BASE };
     this.setupEventListeners();
     this.updateSliders();
+    this.loadDisco();
+  }
+
+  private loadDisco(): void {
+    if (this.discoSound) return;
+    const baseUrl = import.meta.env.BASE_URL;
+    this.discoSound = new Audio(`${baseUrl}bgm/disco.mp3`);
+    this.discoSound.loop = true;
+    this.discoSound.volume = 0.5;
   }
 
   private setupEventListeners(): void {
@@ -68,6 +78,14 @@ export class SpeedController {
 
         if (valueSpan) {
           valueSpan.textContent = id === 'timeScale' ? `${value}x` : value.toFixed(3);
+        }
+
+        if (id === 'timeScale' || id === 'earthRotationSpeed') {
+          if (this.settings['timeScale'] === 100 && this.settings['earthRotationSpeed'] === 1) {
+            this.discoSound?.play();
+          } else {
+            this.discoSound?.pause();
+          }
         }
 
         this.notifyChange();
