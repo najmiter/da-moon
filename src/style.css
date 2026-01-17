@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #615fff #242424;
 }
 
 html,
@@ -17,7 +19,10 @@ body {
   height: 100vh;
 }
 
-/* Canvas container: fill viewport but stay beneath UI */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
+
 #da-moon-entry {
   position: fixed;
   top: 0;
@@ -45,6 +50,10 @@ canvas {
   backdrop-filter: blur(8px);
   z-index: 99999;
   pointer-events: auto;
+}
+
+#speed-controller:has(.speed-panel.collapsed) {
+  overflow: hidden;
 }
 
 .speed-header {
@@ -86,7 +95,6 @@ canvas {
   flex-direction: column;
   gap: 12px;
   transition: all 0.3s ease;
-  padding-bottom: 10px;
 }
 
 .speed-panel.collapsed {
