@@ -15,12 +15,14 @@ export class Earth {
     this.group = new THREE.Group();
     this.textureLoader = new THREE.TextureLoader();
 
-    const earthMap = this.textureLoader.load('/textures/00_earthmap1k.jpg');
-    const earthBump = this.textureLoader.load('/textures/01_earthbump1k.jpg');
-    const earthSpec = this.textureLoader.load('/textures/02_earthspec1k.jpg');
-    const earthLights = this.textureLoader.load('/textures/03_earthlights1k.jpg');
-    const cloudMap = this.textureLoader.load('/textures/04_earthcloudmap.jpg');
-    const cloudMapTrans = this.textureLoader.load('/textures/05_earthcloudmaptrans.jpg');
+    const baseUrl = import.meta.env.BASE_URL;
+
+    const earthMap = this.textureLoader.load(`${baseUrl}textures/00_earthmap1k.jpg`);
+    const earthBump = this.textureLoader.load(`${baseUrl}textures/01_earthbump1k.jpg`);
+    const earthSpec = this.textureLoader.load(`${baseUrl}textures/02_earthspec1k.jpg`);
+    const earthLights = this.textureLoader.load(`${baseUrl}textures/03_earthlights1k.jpg`);
+    const cloudMap = this.textureLoader.load(`${baseUrl}textures/04_earthcloudmap.jpg`);
+    const cloudMapTrans = this.textureLoader.load(`${baseUrl}textures/05_earthcloudmaptrans.jpg`);
 
     const detail = 12;
     const geometry = new THREE.IcosahedronGeometry(radius, detail);

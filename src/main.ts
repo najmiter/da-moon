@@ -32,7 +32,7 @@ class SolarSystemApp {
 
     this.speedController = new SpeedController();
 
-    this.speedController.onChange((settings) => {});
+    this.speedController.onChange((_settings) => {});
     this.speedController.onCenter(() => this.focusOnEarth());
 
     this.sceneManager.add(this.sun.group);

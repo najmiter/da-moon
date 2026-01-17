@@ -11,8 +11,9 @@ export class Moon {
     this.group = new THREE.Group();
     this.textureLoader = new THREE.TextureLoader();
 
-    const moonMap = this.textureLoader.load('/textures/moonmap1k.jpg');
-    const moonBump = this.textureLoader.load('/textures/moonbump1k.jpg');
+    const baseUrl = import.meta.env.BASE_URL;
+    const moonMap = this.textureLoader.load(`${baseUrl}textures/moonmap1k.jpg`);
+    const moonBump = this.textureLoader.load(`${baseUrl}textures/moonbump1k.jpg`);
 
     const moonGeometry = new THREE.SphereGeometry(1.5, 32, 32);
 

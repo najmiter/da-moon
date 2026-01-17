@@ -5,7 +5,7 @@ export class Starfield {
 
   constructor(starCount: number = 2000) {
     const textureLoader = new THREE.TextureLoader();
-    const starTexture = textureLoader.load('/textures/stars/circle.png');
+    const starTexture = textureLoader.load(`${import.meta.env.BASE_URL}textures/stars/circle.png`);
 
     const positions: number[] = [];
     const colors: number[] = [];
