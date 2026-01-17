@@ -73,6 +73,15 @@ class SolarSystemApp {
   }
 }
 
+function playBgm() {
+  const baseUrl = import.meta.env.BASE_URL;
+  const audio = new Audio(`${baseUrl}bgm/aurora.webm`);
+  audio.volume = 0.1;
+  audio.loop = true;
+  audio.play();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  playBgm();
   new SolarSystemApp();
 });
