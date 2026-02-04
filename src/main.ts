@@ -27,7 +27,7 @@ class SolarSystemApp {
     this.starfield = new Starfield(2000);
 
     this.orbitSystem = new OrbitSystem(this.earth, this.moon, this.sun, {
-      earthOrbitRadius: 80,
+      earthOrbitRadius: 180,
     });
 
     this.speedController = new SpeedController();
@@ -96,7 +96,7 @@ class SolarSystemApp {
         musicController.textContent = 'Play music';
       }
     });
-    
+
     const baseUrl = import.meta.env.BASE_URL;
     audioLoader.load(`${baseUrl}bgm/aurora.webm`, (buffer) => {
       sound.setBuffer(buffer);
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const speedPanel = document.querySelector('#speed-controller') as HTMLDivElement;
 
   closeBtn.addEventListener('click', () => {
-    dialog.requestClose()
+    dialog.requestClose();
     speedPanel.style.display = 'block';
     new SolarSystemApp();
   });
